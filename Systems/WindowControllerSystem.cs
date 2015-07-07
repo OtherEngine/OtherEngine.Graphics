@@ -1,21 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using OpenTK;
 using OtherEngine.Core.Attributes;
 using OtherEngine.Core.Data;
+using OtherEngine.Core.Exceptions;
 using OtherEngine.Core.Systems;
 using OtherEngine.Graphics.Components;
-using OpenTK;
-using OtherEngine.Core.Exceptions;
-using System;
 using OtherEngine.Graphics.Events;
 
 namespace OtherEngine.Graphics.Systems
 {
+	[AutoEnable]
 	public class WindowControllerSystem : GameSystem
 	{
 		[TrackComponent(typeof(GameWindowComponent))]
-		public IEnumerable<GameEntity> Windows { get; private set; }
+		public IReadOnlyCollection<GameEntity> Windows { get; private set; }
 
-		public GameEntity CreateWindow()
+		public GameEntity Create()
 		{
 			if (State.IsDisabled())
 				throw new GameSystemStateException(this, GameSystemState.Running);
@@ -44,7 +45,7 @@ namespace OtherEngine.Graphics.Systems
 			component.Window.Run();
 		}
 
-		public void DestroyWindow(GameEntity windowEntity)
+		public void Destroy(GameEntity windowEntity)
 		{
 			if (State.IsDisabled())
 				throw new GameSystemStateException(this, GameSystemState.Running);
