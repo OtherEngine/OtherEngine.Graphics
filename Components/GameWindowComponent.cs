@@ -1,9 +1,9 @@
 ﻿using OpenTK;
-using OtherEngine.Core.Data;
+using OtherEngine.Core;
 
 namespace OtherEngine.Graphics.Components
 {
-	public class GameWindowComponent : GameComponent
+	public class GameWindowComponent : Component
 	{
 		public GameWindow Window { get; private set; }
 

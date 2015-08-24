@@ -1,31 +1,53 @@
-﻿using OpenTK;
-using OtherEngine.Core.Data;
-using OtherEngine.Core.Events;
+﻿using System;
+using OpenTK;
+using OtherEngine.Core;
 
 namespace OtherEngine.Graphics.Events
 {
-	public abstract class WindowEvent : IGameEvent
+	public abstract class WindowEvent : Event
 	{
 		public GameWindow Window { get; private set; }
-		public GameEntity WindowEntity { get; private set; }
+		public Entity WindowEntity { get; private set; }
 
-		internal WindowEvent(GameWindow window, GameEntity windowEntity)
+		internal WindowEvent(GameWindow window, Entity windowEntity)
 		{
 			Window = window;
 			WindowEntity = windowEntity;
 		}
 	}
 
+	public class WindowLoadEvent : WindowEvent
+	{
+		internal WindowLoadEvent(GameWindow window, Entity windowEntity)
+			: base(window, windowEntity) {  }
+	}
+
+	public class WindowResizeEvent : WindowEvent
+	{
+		internal WindowResizeEvent(GameWindow window, Entity windowEntity)
+			: base(window, windowEntity) {  }
+	}
+
 	public class WindowUpdateEvent : WindowEvent
 	{
-		internal WindowUpdateEvent(GameWindow window, GameEntity windowEntity)
-			: base(window, windowEntity) {  }
+		public TimeSpan Delta { get; private set; }
+
+		internal WindowUpdateEvent(GameWindow window, Entity windowEntity, TimeSpan delta)
+			: base(window, windowEntity)
+		{
+			Delta = delta;
+		}
 	}
 
 	public class WindowRenderEvent : WindowEvent
 	{
-		internal WindowRenderEvent(GameWindow window, GameEntity windowEntity)
-			: base(window, windowEntity) {  }
+		public TimeSpan Delta { get; private set; }
+
+		internal WindowRenderEvent(GameWindow window, Entity windowEntity, TimeSpan delta)
+			: base(window, windowEntity)
+		{
+			Delta = delta;
+		}
 	}
 }
 

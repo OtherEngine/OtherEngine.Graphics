@@ -32,12 +32,15 @@
     <Reference Include="OpenTK">
       <HintPath>..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\GameWindowComponent.cs" />
-    <Compile Include="Systems\WindowControllerSystem.cs" />
+    <Compile Include="Components\TextureComponent.cs" />
+    <Compile Include="Controllers\TextureController.cs" />
+    <Compile Include="Controllers\WindowController.cs" />
     <Compile Include="Events\WindowEvents.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -45,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\" />
-    <Folder Include="Systems\" />
+    <Folder Include="Controllers\" />
     <Folder Include="Events\" />
   </ItemGroup>
   <ItemGroup>
