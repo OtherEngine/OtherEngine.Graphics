@@ -36,7 +36,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\GameWindowComponent.cs" />
+    <Compile Include="Components\ShaderComponent.cs" />
     <Compile Include="Components\TextureComponent.cs" />
+    <Compile Include="Controllers\ShaderController.cs" />
     <Compile Include="Controllers\TextureController.cs" />
     <Compile Include="Controllers\WindowController.cs" />
     <Compile Include="Events\WindowEvents.cs" />
