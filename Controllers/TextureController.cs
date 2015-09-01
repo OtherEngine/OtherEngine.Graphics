@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 using OtherEngine.Core;
 using OtherEngine.Core.Attributes;
+using OtherEngine.Core.Components;
 using OtherEngine.Core.Events;
+using OtherEngine.Core.Tracking;
 using OtherEngine.Graphics.Components;
 using Imaging = System.Drawing.Imaging;
 
@@ -13,10 +14,11 @@ namespace OtherEngine.Graphics.Controllers
 	[AutoEnable]
 	public class TextureController : Controller
 	{
-		[TrackComponent(typeof(TextureComponent))]
-		public IReadOnlyCollection<Entity> Textures { get; private set; }
+		[TrackComponent]
+		public EntityCollection<TextureComponent> Textures { get; private set; }
 
-		public Entity Load(string file)
+
+		public EntityRef<TextureComponent> Load(string file)
 		{
 			if (file == null)
 				throw new ArgumentNullException("file");
@@ -36,26 +38,20 @@ namespace OtherEngine.Graphics.Controllers
 
 			bmp.UnlockBits(data);
 
-			return new Entity(Game){ new TextureComponent(id) };
+			return new Entity(Game) { new TypeComponent { Value = "Texture" } }
+				.AddRef(new TextureComponent(id));
 		}
 
-		public void Bind(Entity textureEntity)
+		public void Bind(EntityRef<TextureComponent> texture)
 		{
-			if (textureEntity == null)
-				throw new ArgumentNullException("textureEntity");
-			var component = textureEntity.GetOrThrow<TextureComponent>();
-
-			GL.BindTexture(TextureTarget.Texture2D, component.ID);
+			GL.BindTexture(TextureTarget.Texture2D, texture.Component.ID);
 		}
 
-		public void Release(Entity textureEntity)
+		public void Release(EntityRef<TextureComponent> texture)
 		{
-			if (textureEntity == null)
-				throw new ArgumentNullException("textureEntity");
-			var component = textureEntity.GetOrThrow<TextureComponent>();
-
-			textureEntity.Remove(component);
+			texture.Entity.Remove(texture.Component);
 		}
+
 
 		[SubscribeEvent]
 		void OnTextureComponentRemoved(ComponentRemovedEvent<TextureComponent> ev)

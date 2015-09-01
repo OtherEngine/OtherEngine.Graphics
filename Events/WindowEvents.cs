@@ -1,39 +1,40 @@
 ﻿using System;
 using OpenTK;
 using OtherEngine.Core;
+using OtherEngine.Graphics.Components;
 
 namespace OtherEngine.Graphics.Events
 {
 	public abstract class WindowEvent : Event
 	{
-		public GameWindow Window { get; private set; }
-		public Entity WindowEntity { get; private set; }
+		public GameWindow GameWindow { get; private set; }
+		public EntityRef<GameWindowComponent> Window { get; private set; }
 
-		internal WindowEvent(GameWindow window, Entity windowEntity)
+		internal WindowEvent(GameWindow gameWindow, Entity window)
 		{
+			GameWindow = gameWindow;
 			Window = window;
-			WindowEntity = windowEntity;
 		}
 	}
 
 	public class WindowLoadEvent : WindowEvent
 	{
-		internal WindowLoadEvent(GameWindow window, Entity windowEntity)
-			: base(window, windowEntity) {  }
+		internal WindowLoadEvent(GameWindow gameWindow, EntityRef<GameWindowComponent> window)
+			: base(gameWindow, window) {  }
 	}
 
 	public class WindowResizeEvent : WindowEvent
 	{
-		internal WindowResizeEvent(GameWindow window, Entity windowEntity)
-			: base(window, windowEntity) {  }
+		internal WindowResizeEvent(GameWindow gameWindow, EntityRef<GameWindowComponent> window)
+			: base(gameWindow, window) {  }
 	}
 
 	public class WindowUpdateEvent : WindowEvent
 	{
 		public TimeSpan Delta { get; private set; }
 
-		internal WindowUpdateEvent(GameWindow window, Entity windowEntity, TimeSpan delta)
-			: base(window, windowEntity)
+		internal WindowUpdateEvent(GameWindow gameWindow, EntityRef<GameWindowComponent> window, TimeSpan delta)
+			: base(gameWindow, window)
 		{
 			Delta = delta;
 		}
@@ -43,8 +44,8 @@ namespace OtherEngine.Graphics.Events
 	{
 		public TimeSpan Delta { get; private set; }
 
-		internal WindowRenderEvent(GameWindow window, Entity windowEntity, TimeSpan delta)
-			: base(window, windowEntity)
+		internal WindowRenderEvent(GameWindow gameWindow, EntityRef<GameWindowComponent> window, TimeSpan delta)
+			: base(gameWindow, window)
 		{
 			Delta = delta;
 		}
