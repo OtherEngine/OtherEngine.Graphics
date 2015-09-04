@@ -14,7 +14,10 @@ namespace OtherEngine.Graphics.Controllers
 	public class ShaderController : Controller
 	{
 		[TrackComponent]
-		public EntityCollection<TextureComponent> Shaders { get; private set; }
+		public EntityCollection<ShaderComponent> Shaders { get; private set; }
+
+		[TrackComponent]
+		public EntityCollection<ShaderProgramComponent> Programs { get; private set; }
 
 
 		#region Shader related
