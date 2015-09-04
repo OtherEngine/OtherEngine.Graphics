@@ -2,10 +2,11 @@
 using OpenTK.Graphics.OpenGL4;
 using OtherEngine.Core;
 using OtherEngine.Core.Attributes;
-using OtherEngine.Core.Components;
 using OtherEngine.Core.Events;
+using OtherEngine.Core.Hierarchy;
 using OtherEngine.Core.Tracking;
 using OtherEngine.Graphics.Components;
+using OtherEngine.Core.Components;
 
 namespace OtherEngine.Graphics.Controllers
 {
@@ -16,19 +17,21 @@ namespace OtherEngine.Graphics.Controllers
 		public EntityCollection<TextureComponent> Shaders { get; private set; }
 
 
-		public EntityRef<ShaderComponent> Create(ShaderType type)
+		#region Shader related
+
+		public EntityRef<ShaderComponent> CreateShader(ShaderType type)
 		{
 			var handle = GL.CreateShader(type);
 			return new Entity(Game).AddTypeRef(new ShaderComponent(handle, type));
 		}
 
-		public void SetSource(EntityRef<ShaderComponent> shader, string source)
+		public void SetShaderSource(EntityRef<ShaderComponent> shader, string source)
 		{
 			GL.ShaderSource(shader.Component.Handle, source);
 			shader.Component.Source = source;
 		}
 
-		public void Compile(EntityRef<ShaderComponent> shader)
+		public void CompileShader(EntityRef<ShaderComponent> shader)
 		{
 			GL.CompileShader(shader.Component.Handle);
 
@@ -39,7 +42,7 @@ namespace OtherEngine.Graphics.Controllers
 			shader.Component.InfoLog = GL.GetShaderInfoLog(shader.Component.Handle);
 		}
 
-		public void Delete(EntityRef<ShaderComponent> shader)
+		public void DeleteShader(EntityRef<ShaderComponent> shader)
 		{
 			shader.Entity.Remove(shader.Component);
 		}
@@ -47,9 +50,9 @@ namespace OtherEngine.Graphics.Controllers
 
 		public EntityRef<ShaderComponent> CreateAndCompile(ShaderType type, string source)
 		{
-			var shader = Create(type);
-			SetSource(shader, source);
-			Compile(shader);
+			var shader = CreateShader(type);
+			SetShaderSource(shader, source);
+			CompileShader(shader);
 			return shader;
 		}
 
@@ -59,6 +62,41 @@ namespace OtherEngine.Graphics.Controllers
 		{
 			GL.DeleteShader(ev.Component.Handle);
 		}
+
+		#endregion
+
+		#region Program related
+
+		public EntityRef<ShaderProgramComponent> CreateProgram()
+		{
+			var handle = GL.CreateProgram();
+			return new Entity(Game){ "Shaders", "Attribs", "Uniforms" }
+				.AddTypeRef(new ShaderProgramComponent(handle));
+		}
+
+		public void AttachShader(EntityRef<ShaderProgramComponent> program, EntityRef<ShaderComponent> shader)
+		{
+			GL.AttachShader(program.Component.Handle, shader.Component.Handle);
+			program.Entity.GetChild("Shaders").Add(shader);
+		}
+
+		public void LinkProgram(EntityRef<ShaderProgramComponent> program)
+		{
+			GL.LinkProgram(program.Component.Handle);
+
+			int linkStatus;
+			GL.GetProgram(program.Component.Handle, GetProgramParameterName.LinkStatus, out linkStatus);
+
+			program.Component.Linked = (linkStatus > 0);
+			program.Component.InfoLog = GL.GetProgramInfoLog(program.Component.Handle);
+		}
+
+		public void UseProgram(EntityRef<ShaderProgramComponent> program)
+		{
+			GL.UseProgram(program.Component.Handle);
+		}
+
+		#endregion
 	}
 }
 
