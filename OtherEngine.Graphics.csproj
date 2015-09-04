@@ -35,10 +35,12 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\BufferComponent.cs" />
     <Compile Include="Components\GameWindowComponent.cs" />
     <Compile Include="Components\ShaderComponent.cs" />
     <Compile Include="Components\ShaderProgramComponent.cs" />
     <Compile Include="Components\TextureComponent.cs" />
+    <Compile Include="Controllers\BufferController.cs" />
     <Compile Include="Controllers\ShaderController.cs" />
     <Compile Include="Controllers\TextureController.cs" />
     <Compile Include="Controllers\WindowController.cs" />
