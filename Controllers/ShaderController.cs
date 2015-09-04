@@ -19,9 +19,7 @@ namespace OtherEngine.Graphics.Controllers
 		public EntityRef<ShaderComponent> Create(ShaderType type)
 		{
 			var handle = GL.CreateShader(type);
-
-			return new Entity(Game) { new TypeComponent { Value = "Shader" } }
-				.AddRef(new ShaderComponent(handle, type));
+			return new Entity(Game).AddTypeRef(new ShaderComponent(handle, type));
 		}
 
 		public void SetSource(EntityRef<ShaderComponent> shader, string source)

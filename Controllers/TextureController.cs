@@ -38,8 +38,7 @@ namespace OtherEngine.Graphics.Controllers
 
 			bmp.UnlockBits(data);
 
-			return new Entity(Game) { new TypeComponent { Value = "Texture" } }
-				.AddRef(new TextureComponent(id));
+			return new Entity(Game).AddTypeRef(new TextureComponent(id));
 		}
 
 		public void Bind(EntityRef<TextureComponent> texture)

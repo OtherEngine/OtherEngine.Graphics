@@ -3,7 +3,6 @@ using OpenTK;
 using OpenTK.Graphics;
 using OtherEngine.Core;
 using OtherEngine.Core.Attributes;
-using OtherEngine.Core.Components;
 using OtherEngine.Core.Tracking;
 using OtherEngine.Graphics.Components;
 using OtherEngine.Graphics.Events;
@@ -23,8 +22,7 @@ namespace OtherEngine.Graphics.Controllers
 				GameWindowFlags.FixedWindow, DisplayDevice.Default,
 				3, 3, GraphicsContextFlags.Default);
 			
-			var window = new Entity(Game) { new TypeComponent { Value = "Window" } }
-				.AddRef(new GameWindowComponent(gameWindow));
+			var window = new Entity(Game).AddTypeRef(new GameWindowComponent(gameWindow));
 
 			gameWindow.Load += (sender, e) =>
 				Game.Events.Fire(new WindowLoadEvent(gameWindow, window));
