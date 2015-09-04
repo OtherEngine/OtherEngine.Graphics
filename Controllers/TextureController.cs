@@ -43,7 +43,7 @@ namespace OtherEngine.Graphics.Controllers
 
 		public void Bind(EntityRef<TextureComponent> texture)
 		{
-			GL.BindTexture(TextureTarget.Texture2D, texture.Component.ID);
+			GL.BindTexture(TextureTarget.Texture2D, texture.Component.Handle);
 		}
 
 		public void Release(EntityRef<TextureComponent> texture)
@@ -55,7 +55,7 @@ namespace OtherEngine.Graphics.Controllers
 		[SubscribeEvent]
 		void OnTextureComponentRemoved(ComponentRemovedEvent<TextureComponent> ev)
 		{
-			GL.DeleteTexture(ev.Component.ID);
+			GL.DeleteTexture(ev.Component.Handle);
 		}
 	}
 }

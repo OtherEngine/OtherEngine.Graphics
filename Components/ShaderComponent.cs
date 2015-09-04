@@ -6,9 +6,9 @@ namespace OtherEngine.Graphics.Components
 	public class ShaderComponent : Component
 	{
 		/// <summary>
-		/// Gets the ID handle of the shader.
+		/// Gets the handle of the shader.
 		/// </summary>
-		public int ID { get; private set; }
+		public int Handle { get; private set; }
 
 		/// <summary>
 		/// Gets the type of the shader.
@@ -40,7 +40,7 @@ namespace OtherEngine.Graphics.Components
 
 		internal ShaderComponent(int id, ShaderType type)
 		{
-			ID = id;
+			Handle = id;
 			Type = type;
 		}
 	}

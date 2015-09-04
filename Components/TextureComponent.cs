@@ -4,11 +4,11 @@ namespace OtherEngine.Graphics.Components
 {
 	public class TextureComponent : Component
 	{
-		public int ID { get; private set; }
+		public int Handle { get; private set; }
 
-		internal TextureComponent(int id)
+		internal TextureComponent(int handle)
 		{
-			ID = id;
+			Handle = handle;
 		}
 	}
 }

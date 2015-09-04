@@ -24,19 +24,19 @@ namespace OtherEngine.Graphics.Controllers
 
 		public void SetSource(EntityRef<ShaderComponent> shader, string source)
 		{
-			GL.ShaderSource(shader.Component.ID, source);
+			GL.ShaderSource(shader.Component.Handle, source);
 			shader.Component.Source = source;
 		}
 
 		public void Compile(EntityRef<ShaderComponent> shader)
 		{
-			GL.CompileShader(shader.Component.ID);
+			GL.CompileShader(shader.Component.Handle);
 
 			int compileStatus;
-			GL.GetShader(shader.Component.ID, ShaderParameter.CompileStatus, out compileStatus);
+			GL.GetShader(shader.Component.Handle, ShaderParameter.CompileStatus, out compileStatus);
 
 			shader.Component.Compiled = (compileStatus > 0);
-			shader.Component.InfoLog = GL.GetShaderInfoLog(shader.Component.ID);
+			shader.Component.InfoLog = GL.GetShaderInfoLog(shader.Component.Handle);
 		}
 
 		public void Delete(EntityRef<ShaderComponent> shader)
@@ -57,7 +57,7 @@ namespace OtherEngine.Graphics.Controllers
 		[SubscribeEvent]
 		void OnShaderComponentRemoved(ComponentRemovedEvent<ShaderComponent> ev)
 		{
-			GL.DeleteShader(ev.Component.ID);
+			GL.DeleteShader(ev.Component.Handle);
 		}
 	}
 }
