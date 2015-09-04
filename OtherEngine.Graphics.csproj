@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Components\BufferComponent.cs" />
     <Compile Include="Components\GameWindowComponent.cs" />
+    <Compile Include="Components\ShaderAttribComponent.cs" />
     <Compile Include="Components\ShaderComponent.cs" />
     <Compile Include="Components\ShaderProgramComponent.cs" />
     <Compile Include="Components\TextureComponent.cs" />

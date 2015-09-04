@@ -19,6 +19,9 @@ namespace OtherEngine.Graphics.Controllers
 		[TrackComponent]
 		public EntityCollection<ShaderProgramComponent> Programs { get; private set; }
 
+		[TrackComponent]
+		public EntityCollection<ShaderAttribComponent> Attribs { get; private set; }
+
 
 		#region Shader related
 
@@ -97,6 +100,22 @@ namespace OtherEngine.Graphics.Controllers
 		public void UseProgram(EntityRef<ShaderProgramComponent> program)
 		{
 			GL.UseProgram(program.Component.Handle);
+		}
+
+		#endregion
+
+		#region Attrib related
+
+		public EntityRef<ShaderAttribComponent> DefineAttrib(string name, int index)
+		{
+			return new Entity(Game){ new NameComponent { Value = name } }
+				.AddTypeRef(new ShaderAttribComponent(index));
+		}
+
+		public void BindAttrib(EntityRef<ShaderProgramComponent> program, EntityRef<ShaderAttribComponent> attrib)
+		{
+			program.Entity.GetChild("Attribs").AddLink(attrib.Component.Name, attrib);
+			GL.BindAttribLocation(program.Component.Handle, attrib.Component.Index, attrib.Component.Name);
 		}
 
 		#endregion
