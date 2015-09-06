@@ -108,14 +108,6 @@ namespace OtherEngine.Graphics.Controllers
 		}
 
 
-		public EntityRef<BufferComponent, GLHandleComponent> GenerateAndData<T>(BufferTarget target, T[] data) where T : struct
-		{
-			var buffer = Generate(target);
-			Data<T>(buffer, data);
-			return buffer;
-		}
-
-
 		[SubscribeEvent]
 		void OnBufferComponentRemoved(ComponentRemovedEvent<BufferComponent> ev)
 		{
