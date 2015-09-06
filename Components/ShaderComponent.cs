@@ -6,11 +6,6 @@ namespace OtherEngine.Graphics.Components
 	public class ShaderComponent : Component
 	{
 		/// <summary>
-		/// Gets the handle of the shader.
-		/// </summary>
-		public int Handle { get; private set; }
-
-		/// <summary>
 		/// Gets the type of the shader.
 		/// </summary>
 		// TODO: Use OpenTK's enum or a custom one?
@@ -30,17 +25,9 @@ namespace OtherEngine.Graphics.Components
 		/// </summary>
 		public string Source { get; internal set; }
 
-		/// <summary>
-		/// Gets the information log for the most recent
-		/// compilation of the shader. May be null if the
-		/// shader has not been compiled yet.
-		/// </summary>
-		public string InfoLog { get; internal set; }
 
-
-		internal ShaderComponent(int id, ShaderType type)
+		internal ShaderComponent(ShaderType type)
 		{
-			Handle = id;
 			Type = type;
 		}
 	}

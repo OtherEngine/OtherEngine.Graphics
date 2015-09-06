@@ -5,14 +5,10 @@ namespace OtherEngine.Graphics.Components
 {
 	public class BufferComponent : Component
 	{
-		public int Handle { get; private set; }
-
 		public BufferTarget Target { get; private set; }
 
-
-		internal BufferComponent(int handle, BufferTarget target)
+		internal BufferComponent(BufferTarget target)
 		{
-			Handle = handle;
 			Target = target;
 		}
 	}

@@ -25,36 +25,38 @@ namespace OtherEngine.Graphics.Controllers
 
 		#region Shader related
 
-		public EntityRef<ShaderComponent> CreateShader(ShaderType type)
+		public EntityRef<ShaderComponent, GLHandleComponent> CreateShader(ShaderType type)
 		{
 			var handle = GL.CreateShader(type);
-			return new Entity(Game).AddTypeRef(new ShaderComponent(handle, type));
+			return new Entity(Game).AddTypeRef(
+				new ShaderComponent(type),
+				new GLHandleComponent(handle));
 		}
 
-		public void SetShaderSource(EntityRef<ShaderComponent> shader, string source)
+		public void SetShaderSource(EntityRef<ShaderComponent, GLHandleComponent> shader, string source)
 		{
-			GL.ShaderSource(shader.Component.Handle, source);
-			shader.Component.Source = source;
+			GL.ShaderSource(shader.Second.Value, source);
+			shader.First.Source = source;
 		}
 
-		public void CompileShader(EntityRef<ShaderComponent> shader)
+		public void CompileShader(EntityRef<ShaderComponent, GLHandleComponent> shader)
 		{
-			GL.CompileShader(shader.Component.Handle);
+			GL.CompileShader(shader.Second.Value);
 
 			int compileStatus;
-			GL.GetShader(shader.Component.Handle, ShaderParameter.CompileStatus, out compileStatus);
+			GL.GetShader(shader.Second.Value, ShaderParameter.CompileStatus, out compileStatus);
 
-			shader.Component.Compiled = (compileStatus > 0);
-			shader.Component.InfoLog = GL.GetShaderInfoLog(shader.Component.Handle);
+			shader.First.Compiled = (compileStatus > 0);
+			shader.Entity.GetOrCreate<InfoLogComponent>().Value = GL.GetShaderInfoLog(shader.Second.Value);
 		}
 
-		public void DeleteShader(EntityRef<ShaderComponent> shader)
+		public void DeleteShader(EntityRef<ShaderComponent, GLHandleComponent> shader)
 		{
-			shader.Entity.Remove(shader.Component);
+			GL.DeleteShader(shader.Second.Value);
 		}
 
 
-		public EntityRef<ShaderComponent> CreateAndCompile(ShaderType type, string source)
+		public EntityRef<ShaderComponent, GLHandleComponent> CreateAndCompile(ShaderType type, string source)
 		{
 			var shader = CreateShader(type);
 			SetShaderSource(shader, source);
@@ -64,42 +66,49 @@ namespace OtherEngine.Graphics.Controllers
 
 
 		[SubscribeEvent]
-		void OnShaderComponentRemoved(ComponentRemovedEvent<ShaderComponent> ev)
+		void OnShaderComponentRemoved(ComponentRemovedEvent<ShaderProgramComponent> ev)
 		{
-			GL.DeleteShader(ev.Component.Handle);
+			DeleteProgram(ev.Entity);
 		}
 
 		#endregion
 
 		#region Program related
 
-		public EntityRef<ShaderProgramComponent> CreateProgram()
+		public EntityRef<ShaderProgramComponent, GLHandleComponent> CreateProgram()
 		{
 			var handle = GL.CreateProgram();
-			return new Entity(Game){ "Shaders", "Attribs", "Uniforms" }
-				.AddTypeRef(new ShaderProgramComponent(handle));
+			return new Entity(Game){ "Shaders", "Attribs", "Uniforms" }.AddTypeRef(
+				new ShaderProgramComponent(),
+				new GLHandleComponent(handle));
 		}
 
-		public void AttachShader(EntityRef<ShaderProgramComponent> program, EntityRef<ShaderComponent> shader)
+		public void AttachShader(EntityRef<ShaderProgramComponent, GLHandleComponent> program,
+		                         EntityRef<ShaderComponent, GLHandleComponent> shader)
 		{
-			GL.AttachShader(program.Component.Handle, shader.Component.Handle);
+			GL.AttachShader(program.Second.Value, shader.Second.Value);
 			program.Entity.GetChild("Shaders").Add(shader);
 		}
 
-		public void LinkProgram(EntityRef<ShaderProgramComponent> program)
+		public void LinkProgram(EntityRef<ShaderProgramComponent, GLHandleComponent> program)
 		{
-			GL.LinkProgram(program.Component.Handle);
+			GL.LinkProgram(program.Second.Value);
 
 			int linkStatus;
-			GL.GetProgram(program.Component.Handle, GetProgramParameterName.LinkStatus, out linkStatus);
+			GL.GetProgram(program.Second.Value, GetProgramParameterName.LinkStatus, out linkStatus);
 
-			program.Component.Linked = (linkStatus > 0);
-			program.Component.InfoLog = GL.GetProgramInfoLog(program.Component.Handle);
+			program.First.Linked = (linkStatus > 0);
+			program.Entity.GetOrCreate<InfoLogComponent>().Value = GL.GetProgramInfoLog(program.Second.Value);
 		}
 
-		public void UseProgram(EntityRef<ShaderProgramComponent> program)
+		public void UseProgram(EntityRef<ShaderProgramComponent, GLHandleComponent> program)
 		{
-			GL.UseProgram(program.Component.Handle);
+			GL.UseProgram(program.Second.Value);
+		}
+
+		public void DeleteProgram(EntityRef<ShaderProgramComponent, GLHandleComponent> program)
+		{
+			GL.DeleteProgram(program.Second.Value);
 		}
 
 		#endregion
@@ -112,10 +121,12 @@ namespace OtherEngine.Graphics.Controllers
 				.AddTypeRef(new ShaderAttribComponent(index));
 		}
 
-		public void BindAttrib(EntityRef<ShaderProgramComponent> program, EntityRef<ShaderAttribComponent> attrib)
+		public void BindAttrib(EntityRef<ShaderProgramComponent, GLHandleComponent> program,
+		                       EntityRef<ShaderAttribComponent> attrib)
 		{
-			program.Entity.GetChild("Attribs").AddLink(attrib.Component.Name, attrib);
-			GL.BindAttribLocation(program.Component.Handle, attrib.Component.Index, attrib.Component.Name);
+			var name = attrib.Entity.GetOrThrow<NameComponent>().Value;
+			program.Entity.GetChild("Attribs").AddLink(name, attrib);
+			GL.BindAttribLocation(program.Second.Value, attrib.Component.Index, name);
 		}
 
 		#endregion

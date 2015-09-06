@@ -18,7 +18,7 @@ namespace OtherEngine.Graphics.Controllers
 		public EntityCollection<TextureComponent> Textures { get; private set; }
 
 
-		public EntityRef<TextureComponent> Load(string file)
+		public EntityRef<TextureComponent, GLHandleComponent> Load(string file)
 		{
 			if (file == null)
 				throw new ArgumentNullException("file");
@@ -27,8 +27,8 @@ namespace OtherEngine.Graphics.Controllers
 			var data = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size),
 				Imaging.ImageLockMode.ReadOnly, Imaging.PixelFormat.Format32bppArgb);
 
-			var id = GL.GenTexture();
-			GL.BindTexture(TextureTarget.Texture2D, id);
+			var handle = GL.GenTexture();
+			GL.BindTexture(TextureTarget.Texture2D, handle);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
@@ -38,24 +38,26 @@ namespace OtherEngine.Graphics.Controllers
 
 			bmp.UnlockBits(data);
 
-			return new Entity(Game).AddTypeRef(new TextureComponent(id));
+			return new Entity(Game).AddTypeRef(
+				new TextureComponent(),
+				new GLHandleComponent(handle));
 		}
 
-		public void Bind(EntityRef<TextureComponent> texture)
+		public void Bind(EntityRef<TextureComponent, GLHandleComponent> texture)
 		{
-			GL.BindTexture(TextureTarget.Texture2D, texture.Component.Handle);
+			GL.BindTexture(TextureTarget.Texture2D, texture.Second.Value);
 		}
 
-		public void Release(EntityRef<TextureComponent> texture)
+		public void Delete(EntityRef<TextureComponent, GLHandleComponent> texture)
 		{
-			texture.Entity.Remove(texture.Component);
+			GL.DeleteTexture(texture.Second.Value);
 		}
 
 
 		[SubscribeEvent]
 		void OnTextureComponentRemoved(ComponentRemovedEvent<TextureComponent> ev)
 		{
-			GL.DeleteTexture(ev.Component.Handle);
+			Delete(ev.Entity);
 		}
 	}
 }
