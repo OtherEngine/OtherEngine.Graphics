@@ -4,9 +4,8 @@ using OtherEngine.Core;
 using OtherEngine.Core.Components;
 using OtherEngine.Core.Hierarchy;
 using OtherEngine.Core.Tracking;
-using OtherEngine.Graphics.Components;
 
-namespace OtherEngine.Graphics.Controllers
+namespace OtherEngine.Graphics.OpenGL
 {
 	public class VertexArrayController : Controller
 	{

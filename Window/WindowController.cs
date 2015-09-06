@@ -4,25 +4,24 @@ using OpenTK.Graphics;
 using OtherEngine.Core;
 using OtherEngine.Core.Attributes;
 using OtherEngine.Core.Tracking;
-using OtherEngine.Graphics.Components;
-using OtherEngine.Graphics.Events;
 
-namespace OtherEngine.Graphics.Controllers
+namespace OtherEngine.Graphics.Window
 {
 	[AutoEnable]
 	public class WindowController : Controller
 	{
 		[TrackComponent]
-		public EntityCollection<TextureComponent> Windows { get; private set; }
+		public EntityCollection<WindowComponent> Windows { get; private set; }
 
-		public EntityRef<GameWindowComponent> Create()
+
+		public EntityRef<WindowComponent> Create()
 		{
 			var gameWindow = new GameWindow(1200, 725,
 				GraphicsMode.Default, "",
 				GameWindowFlags.FixedWindow, DisplayDevice.Default,
 				3, 3, GraphicsContextFlags.Default);
 			
-			var window = new Entity(Game).AddTypeRef(new GameWindowComponent(gameWindow));
+			var window = new Entity(Game).AddTypeRef(new WindowComponent(gameWindow));
 
 			gameWindow.Load += (sender, e) =>
 				Game.Events.Fire(new WindowLoadEvent(gameWindow, window));
@@ -37,12 +36,12 @@ namespace OtherEngine.Graphics.Controllers
 			return window;
 		}
 
-		public void RunGameLoop(EntityRef<GameWindowComponent> window)
+		public void RunGameLoop(EntityRef<WindowComponent> window)
 		{
 			window.Component.Window.Run(60, 60);
 		}
 
-		public void Destroy(EntityRef<GameWindowComponent> window)
+		public void Destroy(EntityRef<WindowComponent> window)
 		{
 			window.Component.Window.Close();
 			window.Entity.Remove(window.Component);

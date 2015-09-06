@@ -1,14 +1,13 @@
-﻿using OtherEngine.Core;
-using OtherEngine.Core.Tracking;
-using OtherEngine.Graphics.Components;
-using OpenTK.Graphics.OpenGL4;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
+using OpenTK;
+using OpenTK.Graphics.OpenGL4;
+using OtherEngine.Core;
 using OtherEngine.Core.Attributes;
 using OtherEngine.Core.Events;
-using OpenTK;
+using OtherEngine.Core.Tracking;
 
-namespace OtherEngine.Graphics.Controllers
+namespace OtherEngine.Graphics.OpenGL
 {
 	[AutoEnable]
 	public class BufferController : Controller

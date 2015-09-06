@@ -5,10 +5,9 @@ using OtherEngine.Core;
 using OtherEngine.Core.Attributes;
 using OtherEngine.Core.Events;
 using OtherEngine.Core.Tracking;
-using OtherEngine.Graphics.Components;
 using Imaging = System.Drawing.Imaging;
 
-namespace OtherEngine.Graphics.Controllers
+namespace OtherEngine.Graphics.OpenGL
 {
 	[AutoEnable]
 	public class TextureController : Controller

@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OtherEngine.Core;
 
-namespace OtherEngine.Graphics.Components
+namespace OtherEngine.Graphics.OpenGL
 {
 	public class ShaderComponent : Component
 	{

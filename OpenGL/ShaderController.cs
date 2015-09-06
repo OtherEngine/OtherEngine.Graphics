@@ -2,13 +2,12 @@
 using OpenTK.Graphics.OpenGL4;
 using OtherEngine.Core;
 using OtherEngine.Core.Attributes;
+using OtherEngine.Core.Components;
 using OtherEngine.Core.Events;
 using OtherEngine.Core.Hierarchy;
 using OtherEngine.Core.Tracking;
-using OtherEngine.Graphics.Components;
-using OtherEngine.Core.Components;
 
-namespace OtherEngine.Graphics.Controllers
+namespace OtherEngine.Graphics.OpenGL
 {
 	[AutoEnable]
 	public class ShaderController : Controller

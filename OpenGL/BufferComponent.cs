@@ -1,7 +1,7 @@
 ﻿using OtherEngine.Core;
 using OpenTK.Graphics.OpenGL4;
 
-namespace OtherEngine.Graphics.Components
+namespace OtherEngine.Graphics.OpenGL
 {
 	public class BufferComponent : Component
 	{

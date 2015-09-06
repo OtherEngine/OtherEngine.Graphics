@@ -35,31 +35,30 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\BufferComponent.cs" />
-    <Compile Include="Components\GLHandleComponent.cs" />
-    <Compile Include="Components\GameWindowComponent.cs" />
-    <Compile Include="Components\InfoLogComponent.cs" />
-    <Compile Include="Components\ShaderAttribComponent.cs" />
-    <Compile Include="Components\ShaderComponent.cs" />
-    <Compile Include="Components\ShaderProgramComponent.cs" />
-    <Compile Include="Components\TextureComponent.cs" />
-    <Compile Include="Components\VertexArrayComponent.cs" />
-    <Compile Include="Controllers\BufferController.cs" />
-    <Compile Include="Controllers\ShaderController.cs" />
-    <Compile Include="Controllers\TextureController.cs" />
-    <Compile Include="Controllers\VertexArrayController.cs" />
-    <Compile Include="Controllers\WindowController.cs" />
-    <Compile Include="Events\WindowEvents.cs" />
+    <Compile Include="OpenGL\BufferComponent.cs" />
+    <Compile Include="OpenGL\BufferController.cs" />
+    <Compile Include="OpenGL\GLHandleComponent.cs" />
+    <Compile Include="OpenGL\InfoLogComponent.cs" />
+    <Compile Include="OpenGL\ShaderAttribComponent.cs" />
+    <Compile Include="OpenGL\ShaderComponent.cs" />
+    <Compile Include="OpenGL\ShaderController.cs" />
+    <Compile Include="OpenGL\ShaderProgramComponent.cs" />
+    <Compile Include="OpenGL\TextureComponent.cs" />
+    <Compile Include="OpenGL\TextureController.cs" />
+    <Compile Include="OpenGL\VertexArrayComponent.cs" />
+    <Compile Include="OpenGL\VertexArrayController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Window\WindowComponent.cs" />
+    <Compile Include="Window\WindowController.cs" />
+    <Compile Include="Window\WindowEvents.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Events\" />
+    <Folder Include="OpenGL\" />
+    <Folder Include="Window\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OtherEngine.Core\OtherEngine.Core.csproj">

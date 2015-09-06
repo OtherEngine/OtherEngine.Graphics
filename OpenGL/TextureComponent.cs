@@ -1,6 +1,6 @@
 ﻿using OtherEngine.Core;
 
-namespace OtherEngine.Graphics.Components
+namespace OtherEngine.Graphics.OpenGL
 {
 	public class TextureComponent : Component
 	{
