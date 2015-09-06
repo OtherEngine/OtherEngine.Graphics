@@ -49,6 +49,11 @@ namespace OtherEngine.Graphics.Controllers
 			Unbind(buffer);
 		}
 
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, int[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.Int, 1);
+		}
+
 		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, float[] data)
 		{
 			Data(buffer, data, VertexAttribPointerType.Float, 1);
