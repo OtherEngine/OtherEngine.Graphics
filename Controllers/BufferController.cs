@@ -6,6 +6,7 @@ using System;
 using System.Runtime.InteropServices;
 using OtherEngine.Core.Attributes;
 using OtherEngine.Core.Events;
+using OpenTK;
 
 namespace OtherEngine.Graphics.Controllers
 {
@@ -34,13 +35,72 @@ namespace OtherEngine.Graphics.Controllers
 			GL.BindBuffer(buffer.First.Target, 0);
 		}
 
-		public void Data<T>(EntityRef<BufferComponent, GLHandleComponent> buffer, T[] data) where T : struct
+		#region Data method definition and overloads
+
+		public void Data<T>(EntityRef<BufferComponent, GLHandleComponent> buffer, T[] data,
+		                    VertexAttribPointerType pointerType, int size) where T : struct
 		{
+			buffer.First.PointerType = pointerType;
+			buffer.First.Size = size;
+
 			Bind(buffer);
-			var size = Marshal.SizeOf<T>() * data.Length;
-			GL.BufferData<T>(buffer.First.Target, new IntPtr(size), data, BufferUsageHint.StaticDraw);
+			var bufferSize = Marshal.SizeOf<T>() * data.Length;
+			GL.BufferData<T>(buffer.First.Target, new IntPtr(bufferSize), data, BufferUsageHint.StaticDraw);
 			Unbind(buffer);
 		}
+
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, float[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.Float, 1);
+		}
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, Vector2[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.Float, 2);
+		}
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, Vector3[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.Float, 3);
+		}
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, Vector4[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.Float, 4);
+		}
+
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, double[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.Double, 1);
+		}
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, Vector2d[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.Double, 2);
+		}
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, Vector3d[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.Double, 3);
+		}
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, Vector4d[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.Double, 4);
+		}
+
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, Half[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.HalfFloat, 1);
+		}
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, Vector2h[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.HalfFloat, 2);
+		}
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, Vector3h[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.HalfFloat, 3);
+		}
+		public void Data(EntityRef<BufferComponent, GLHandleComponent> buffer, Vector4h[] data)
+		{
+			Data(buffer, data, VertexAttribPointerType.HalfFloat, 4);
+		}
+
+		#endregion
 
 		public void Delete(EntityRef<BufferComponent, GLHandleComponent> buffer)
 		{
