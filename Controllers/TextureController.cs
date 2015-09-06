@@ -3,7 +3,6 @@ using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 using OtherEngine.Core;
 using OtherEngine.Core.Attributes;
-using OtherEngine.Core.Components;
 using OtherEngine.Core.Events;
 using OtherEngine.Core.Tracking;
 using OtherEngine.Graphics.Components;
@@ -16,6 +15,9 @@ namespace OtherEngine.Graphics.Controllers
 	{
 		[TrackComponent]
 		public EntityCollection<TextureComponent> Textures { get; private set; }
+
+
+		public EntityRef<TextureComponent, GLHandleComponent> CurrentTexture { get; private set; }
 
 
 		public EntityRef<TextureComponent, GLHandleComponent> Load(string file)
@@ -36,6 +38,7 @@ namespace OtherEngine.Graphics.Controllers
 				PixelInternalFormat.Rgba, data.Width, data.Height, 0,
 				PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
 
+			GL.BindTexture(TextureTarget.Texture2D, CurrentTexture?.Second.Value ?? 0);
 			bmp.UnlockBits(data);
 
 			return new Entity(Game).AddTypeRef(
@@ -46,6 +49,16 @@ namespace OtherEngine.Graphics.Controllers
 		public void Bind(EntityRef<TextureComponent, GLHandleComponent> texture)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, texture.Second.Value);
+			CurrentTexture = texture;
+		}
+
+		public void Unbind()
+		{
+			if (CurrentTexture == null)
+				throw new InvalidOperationException("No texture currently bound");
+
+			GL.BindTexture(TextureTarget.Texture2D, 0);
+			CurrentTexture = null;
 		}
 
 		public void Delete(EntityRef<TextureComponent, GLHandleComponent> texture)
