@@ -8,9 +8,9 @@ namespace OtherEngine.Graphics.Components
 		public BufferTarget Target { get; private set; }
 
 
-		internal VertexAttribPointerType PointerType { get; internal set; }
+		internal VertexAttribPointerType PointerType { get; set; }
 
-		internal int Size { get; internal set; }
+		internal int Size { get; set; }
 
 
 		internal BufferComponent(BufferTarget target)
